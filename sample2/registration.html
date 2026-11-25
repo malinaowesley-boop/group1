@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Member Registration | PWD Support</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <header>
+        <h2>PWD Support</h2>
+        <nav>
+            <ul>
+                <li><a href="sample2.html#home">Home</a></li>
+                <li><a href="sample2.html#about">About</a></li>
+                <li><a href="sample2.html#services">Services</a></li>
+                <li><a href="registration.html" aria-current="page">Registration</a></li>
+                <li><a href="sample2.html#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="register">
+            <div class="register-box">
+                <h2>Member Registration</h2>
+                <form id="memberForm">
+                    <div class="form-grid">
+                        <label>
+                            Last Name
+                            <input type="text" id="lastName" placeholder="Enter last name" required>
+                        </label>
+
+                        <label>
+                            First Name
+                            <input type="text" id="firstName" placeholder="Enter first name" required>
+                        </label>
+
+                        <label>
+                            Middle Name
+                            <input type="text" id="middleName" placeholder="Enter middle name">
+                        </label>
+
+                        <label>
+                            Suffix
+                            <input type="text" id="suffix" placeholder="e.g., Jr., Sr., III">
+                        </label>
+
+                        <label>
+                            Birth Date
+                            <input type="date" id="birthDate" required>
+                        </label>
+
+                        <label>
+                            Gender
+                            <select id="gender" required>
+                                <option value="">Select gender</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Non-binary">Non-binary</option>
+                                <option value="Prefer not to say">Prefer not to say</option>
+                            </select>
+                        </label>
+
+                        <label>
+                            Disability Type
+                            <select id="disabilityType" required>
+                                <option value="">Select disability</option>
+                                <option value="Physical Disability">Physical Disability</option>
+                                <option value="Visual Impairment">Visual Impairment</option>
+                                <option value="Hearing Impairment">Hearing Impairment</option>
+                                <option value="Intellectual Disability">Intellectual Disability</option>
+                                <option value="Mental Health Condition">Mental Health Condition</option>
+                                <option value="Multiple Disabilities">Multiple Disabilities</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </label>
+
+                        <label class="full-width">
+                            Address
+                            <input type="text" id="address" placeholder="Enter address" required>
+                        </label>
+
+                        <label>
+                            Contact Number
+                            <input type="tel" id="contactNumber" placeholder="09XXXXXXXXX" required>
+                        </label>
+                    </div>
+
+                    <button type="button" id="registerBtn">Register</button>
+                </form>
+
+                <div id="classificationResult" class="result-box" aria-live="polite">
+                    Registration details will appear here after submission.
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        document.getElementById('registerBtn').addEventListener('click', function () {
+            const lastName = document.getElementById('lastName').value.trim();
+            const firstName = document.getElementById('firstName').value.trim();
+            const middleName = document.getElementById('middleName').value.trim();
+            const suffix = document.getElementById('suffix').value.trim();
+            const birthDate = document.getElementById('birthDate').value;
+            const gender = document.getElementById('gender').value;
+            const disabilityType = document.getElementById('disabilityType').value;
+            const address = document.getElementById('address').value.trim();
+            const contactNumber = document.getElementById('contactNumber').value.trim();
+
+            if (!lastName || !firstName || !birthDate || !gender || !disabilityType || !address || !contactNumber) {
+                document.getElementById('classificationResult').innerHTML = '<p class="error">Please complete all fields before registering.</p>';
+                return;
+            }
+
+            const fullName = [firstName, middleName, lastName, suffix].filter(Boolean).join(' ');
+            const escapeHtml = (value) => value
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+
+            const dob = new Date(birthDate);
+            const today = new Date();
+            let age = today.getFullYear() - dob.getFullYear();
+            const monthDiff = today.getMonth() - dob.getMonth();
+            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dob.getDate())) {
+                age--;
+            }
+
+            let ageGroup = 'Adult';
+            if (age <= 12) ageGroup = 'Child';
+            else if (age <= 17) ageGroup = 'Teen';
+            else if (age <= 59) ageGroup = 'Adult';
+            else ageGroup = 'Senior';
+
+            const disabilityCategory = disabilityType.includes('Visual') || disabilityType.includes('Hearing') ? 'Sensory Disability' :
+                disabilityType.includes('Physical') || disabilityType.includes('Multiple') ? 'Physical/Mobility Disability' :
+                disabilityType.includes('Intellectual') || disabilityType.includes('Mental') ? 'Cognitive/Mental Disability' : 'Other Disability';
+
+            document.getElementById('classificationResult').innerHTML = `
+                <h3>Registration Summary</h3>
+                <p><strong>Full Name:</strong> ${escapeHtml(fullName)}</p>
+                <p><strong>Last Name:</strong> ${escapeHtml(lastName)}</p>
+                <p><strong>First Name:</strong> ${escapeHtml(firstName)}</p>
+                <p><strong>Middle Name:</strong> ${escapeHtml(middleName || 'N/A')}</p>
+                <p><strong>Suffix:</strong> ${escapeHtml(suffix || 'N/A')}</p>
+                <p><strong>Gender:</strong> ${escapeHtml(gender)}</p>
+                <p><strong>Age:</strong> ${age} years old (${ageGroup})</p>
+                <p><strong>Disability Type:</strong> ${escapeHtml(disabilityType)}</p>
+                <p><strong>Category:</strong> ${escapeHtml(disabilityCategory)}</p>
+                <p><strong>Address:</strong> ${escapeHtml(address)}</p>
+                <p><strong>Contact:</strong> ${escapeHtml(contactNumber)}</p>
+            `;
+        });
+    </script>
+</body>
+
+</html>
