@@ -1,0 +1,79 @@
+.members-page {
+    max-width: 1350px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.db-table-wrapper {
+    max-height: 450px;
+    overflow-y: auto;
+    overflow-x: auto;
+    margin-top: 20px;
+    border: 1px solid #334155;
+}
+
+.db-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background-color: #ffffff;
+    font-size: 0.92rem;
+    text-align: left;
+}
+
+.db-table th,
+.db-table td {
+    border-right: 1px solid #334155;
+    border-bottom: 1px solid #334155;
+    padding: 10px 12px;
+}
+
+.db-table th:last-child,
+.db-table td:last-child {
+    border-right: none;
+}
+
+.db-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.db-table .table-title-banner {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    background-color: #ffffff;
+    color: #0f172a;
+    font-size: 1.25rem;
+    font-weight: 700;
+    text-align: center;
+    padding: 14px;
+}
+
+.db-table .column-headers th {
+    position: sticky;
+    top: 52px;
+    z-index: 2;
+    background-color: #0077ff;
+    color: #ffffff;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.db-table tbody tr:nth-child(even) {
+    background-color: #f8fafc;
+}
+
+.db-table tbody tr:hover {
+    background-color: #f0fdf4;
+}
+
+.table-footer-box {
+    display: inline-block;
+    margin-top: 12px;
+    padding: 8px 14px;
+    border: 1px solid #334155;
+    background-color: #ffffff;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #1e293b;
+}

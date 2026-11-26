@@ -139,6 +139,70 @@ button:hover {
     line-height: 1.7;
 }
 
+.members-page {
+    padding: 80px 8%;
+    text-align: center;
+}
+
+.members-page h1 {
+    margin-bottom: 12px;
+    font-size: clamp(28px, 4vw, 40px);
+}
+
+.members-page > p {
+    max-width: 760px;
+    margin: auto;
+    color: #475569;
+    font-size: 18px;
+}
+
+.members-search {
+    display: block;
+    max-width: 560px;
+    margin: 28px auto 12px;
+}
+
+.members-search input {
+    background: white;
+}
+
+.member-count {
+    min-height: 28px;
+    margin: 0 auto 16px !important;
+    color: #475569;
+    font-size: 14px !important;
+}
+
+.member-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    gap: 12px;
+    max-width: 900px;
+    margin: 0 auto;
+    list-style: none;
+    text-align: left;
+}
+
+.member-list li {
+    padding: 14px 18px;
+    border: 1px solid #dbe3ee;
+    border-radius: 10px;
+    background: white;
+    font-weight: bold;
+}
+
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
 .register-box {
     max-width: 900px;
     margin: 0 auto;

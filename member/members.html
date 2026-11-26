@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Members | PWD Support</title>
+    <link rel="stylesheet" href="../sample2/style.css">
+    <link rel="stylesheet" href="members.css">
+    <script src="../supabase.min.js"></script>
+</head>
+
+<body>
+    <header>
+        <h2>PWD Support</h2>
+        <nav>
+            <ul>
+                <li><a href="../sample2/sample2.html#home">Home</a></li>
+                <li><a href="../sample2/sample2.html#about">About</a></li>
+                <li><a href="../sample2/sample2.html#services">Services</a></li>
+                <li><a href="../sample2/registration.html">Registration</a></li>
+                <li><a href="members.html" aria-current="page">Members</a></li>
+                <li><a href="../sample2/sample2.html#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="members-page">
+            <h1>PWD Members</h1>
+            <p>Search registered member records below.</p>
+            <label class="members-search">
+                <span class="visually-hidden">Search members</span>
+                <input type="search" id="memberSearch" placeholder="Search by name, disability, or address..." autocomplete="off">
+            </label>
+            <p id="memberCount" class="member-count" aria-live="polite"></p>
+
+            <div class="db-table-wrapper">
+                <table class="db-table">
+                    <thead>
+                        <tr>
+                            <th colspan="9" class="table-title-banner">Registered PWD Members</th>
+                        </tr>
+                        <tr class="column-headers">
+                            <th>Full Name</th>
+                            <th>Birth Date</th>
+                            <th>Age</th>
+                            <th>Age Group</th>
+                            <th>Gender</th>
+                            <th>Disability Type</th>
+                            <th>Disability Category</th>
+                            <th>Address</th>
+                            <th>Contact Number</th>
+                        </tr>
+                    </thead>
+                    <tbody id="memberTableBody"></tbody>
+                </table>
+            </div>
+
+            <div id="tableFooter" class="table-footer-box"></div>
+        </section>
+    </main>
+
+    <script src="../supabase-config.js"></script>
+    <script src="members.js"></script>
+</body>
+
+</html>

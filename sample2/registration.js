@@ -3,7 +3,7 @@ document.getElementById('registerBtn').addEventListener('click', async function 
     const firstName = document.getElementById('firstName').value.trim();
     const middleName = document.getElementById('middleName').value.trim();
     const suffix = document.getElementById('suffix').value.trim();
-    const birthDate = document.getElementById('birthDate').value;
+    const birthDate = document.getElementById('birthDate').value.trim();
     const gender = document.getElementById('gender').value;
     const disabilityType = document.getElementById('disabilityType').value;
     const address = document.getElementById('address').value.trim();
@@ -14,15 +14,31 @@ document.getElementById('registerBtn').addEventListener('click', async function 
         return;
     }
 
+    const birthDateParts = /^(\d{4})-(\d{2})-(\d{2})$/.exec(birthDate);
+    if (!birthDateParts) {
+        document.getElementById('classificationResult').innerHTML = '<p class="error">Enter the birth date in YYYY-MM-DD format.</p>';
+        return;
+    }
+
+    const birthYear = Number(birthDateParts[1]);
+    const birthMonth = Number(birthDateParts[2]);
+    const birthDay = Number(birthDateParts[3]);
+    const dob = new Date(0);
+    dob.setHours(0, 0, 0, 0);
+    dob.setFullYear(birthYear, birthMonth - 1, birthDay);
+    if (dob.getFullYear() !== birthYear || dob.getMonth() !== birthMonth - 1 || dob.getDate() !== birthDay) {
+        document.getElementById('classificationResult').innerHTML = '<p class="error">Enter a valid birth date.</p>';
+        return;
+    }
+
     const fullName = [firstName, middleName, lastName, suffix].filter(Boolean).join(' ');
     const escapeHtml = (value) => value
         .replace(/&/g, '&amp;')
         .replace(/</g, '&lt;')
         .replace(/>/g, '&gt;')
         .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#039;');
+        .replace(/'/g, "&#039;");
 
-    const dob = new Date(birthDate);
     const today = new Date();
     let age = today.getFullYear() - dob.getFullYear();
     const monthDiff = today.getMonth() - dob.getMonth();
