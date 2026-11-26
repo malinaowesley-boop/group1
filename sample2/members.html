@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Members | PWD Support</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <header>
+        <h2>PWD Support</h2>
+        <nav>
+            <ul>
+                <li><a href="sample2.html#home">Home</a></li>
+                <li><a href="sample2.html#about">About</a></li>
+                <li><a href="sample2.html#services">Services</a></li>
+                <li><a href="registration.html">Registration</a></li>
+                <li><a href="members.html" aria-current="page">Members</a></li>
+                <li><a href="sample2.html#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="members-page">
+            <h1>Our Members</h1>
+            <p>Search registered member names below.</p>
+            <label class="members-search">
+                <span class="visually-hidden">Search members</span>
+                <input type="search" id="memberSearch" placeholder="Search members by name..." autocomplete="off">
+            </label>
+            <p id="memberCount" class="member-count" aria-live="polite"></p>
+            <ul id="memberList" class="member-list" aria-live="polite"></ul>
+        </section>
+    </main>
+
+    <script>
+        const searchInput = document.getElementById('memberSearch');
+        const memberList = document.getElementById('memberList');
+        const memberCount = document.getElementById('memberCount');
+
+        function renderMembers() {
+            let members;
+            try {
+                const savedMembers = JSON.parse(localStorage.getItem('pwdSupportMembers') || '[]');
+                if (!Array.isArray(savedMembers) || !savedMembers.every(member => typeof member === 'string')) {
+                    throw new Error('Saved member data has an unexpected format.');
+                }
+                members = savedMembers;
+            } catch (error) {
+                memberList.textContent = '';
+                memberCount.textContent = 'Unable to load members from this browser.';
+                return;
+            }
+
+            const query = searchInput.value.trim().toLocaleLowerCase();
+            const matches = members.filter(name => name.toLocaleLowerCase().includes(query));
+            memberList.textContent = '';
+            memberCount.textContent = members.length
+                ? `${matches.length} of ${members.length} member${members.length === 1 ? '' : 's'}`
+                : 'No members registered yet.';
+
+            matches.forEach(name => {
+                const item = document.createElement('li');
+                item.textContent = name;
+                memberList.appendChild(item);
+            });
+
+            if (members.length && matches.length === 0) {
+                memberCount.textContent = 'No members match your search.';
+            }
+        }
+
+        searchInput.addEventListener('input', renderMembers);
+        renderMembers();
+    </script>
+</body>
+
+</html>

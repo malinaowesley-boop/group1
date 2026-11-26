@@ -17,6 +17,7 @@
                 <li><a href="sample2.html#about">About</a></li>
                 <li><a href="sample2.html#services">Services</a></li>
                 <li><a href="registration.html" aria-current="page">Registration</a></li>
+                <li><a href="members.html">Members</a></li>
                 <li><a href="sample2.html#contact">Contact</a></li>
             </ul>
         </nav>
@@ -50,7 +51,7 @@
 
                         <label>
                             Birth Date
-                            <input type="date" id="birthDate" required>
+                            <input type="text" id="birthDate" placeholder="YYYY-MM-DD" autocomplete="bday" required>
                         </label>
 
                         <label>
@@ -97,6 +98,7 @@
                 </div>
             </div>
         </section>
+
     </main>
 
     <script>
@@ -116,6 +118,25 @@
                 return;
             }
 
+            const birthDateParts = /^(\d{4})-(\d{2})-(\d{2})$/.exec(birthDate);
+            if (!birthDateParts) {
+                document.getElementById('classificationResult').innerHTML =
+                    '<p class="error">Enter the birth date in YYYY-MM-DD format.</p>';
+                return;
+            }
+
+            const birthYear = Number(birthDateParts[1]);
+            const birthMonth = Number(birthDateParts[2]);
+            const birthDay = Number(birthDateParts[3]);
+            const dob = new Date(0);
+            dob.setHours(0, 0, 0, 0);
+            dob.setFullYear(birthYear, birthMonth - 1, birthDay);
+            if (dob.getFullYear() !== birthYear || dob.getMonth() !== birthMonth - 1 || dob.getDate() !== birthDay) {
+                document.getElementById('classificationResult').innerHTML =
+                    '<p class="error">Enter a valid birth date.</p>';
+                return;
+            }
+
             const fullName = [firstName, middleName, lastName, suffix].filter(Boolean).join(' ');
             const escapeHtml = (value) => value
                 .replace(/&/g, '&amp;')
@@ -124,7 +145,19 @@
                 .replace(/"/g, '&quot;')
                 .replace(/'/g, '&#039;');
 
-            const dob = new Date(birthDate);
+            try {
+                const members = JSON.parse(localStorage.getItem('pwdSupportMembers') || '[]');
+                if (!Array.isArray(members) || !members.every(member => typeof member === 'string')) {
+                    throw new Error('Saved member data has an unexpected format.');
+                }
+                members.push(fullName);
+                localStorage.setItem('pwdSupportMembers', JSON.stringify(members));
+            } catch (error) {
+                document.getElementById('classificationResult').innerHTML =
+                    '<p class="error">Registration could not be saved in this browser. Please check your browser storage settings and try again.</p>';
+                return;
+            }
+
             const today = new Date();
             let age = today.getFullYear() - dob.getFullYear();
             const monthDiff = today.getMonth() - dob.getMonth();
